@@ -1,3 +1,100 @@
+# Podcast2Summary - Podcast Transcription and Summarization Tool
+
+This tool automatically extracts audio content from Xiaoyuzhou (小宇宙) podcast URLs, converts it to text, and generates content summaries.
+
+## Features
+
+- Automatically extracts audio links from Xiaoyuzhou URLs
+- Downloads audio files
+- Supports multiple speech recognition methods:
+  - Volcengine speech recognition (high quality, supports long audio, includes timestamps and speaker information)
+  - Google speech recognition (suitable for short audio)
+- Automatic fallback mechanism: when one transcription method fails, it automatically tries others
+- Automatically saves transcribed text with filenames based on podcast titles
+- Supports summarizing transcribed content using Volcengine LLM API, generating content overviews in Q&A format
+
+## Installation
+
+1. Clone or download this project
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Create a `.env` file (copy from `.env.example`) and set your API keys and endpoints:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file and add your API keys and configuration:
+
+```
+# Volcengine speech recognition service configuration
+VOLCENGINE_APPID=your_volcengine_appid_here
+VOLCENGINE_TOKEN=your_volcengine_token_here
+VOLCENGINE_CLUSTER=your_volcengine_cluster_here
+
+# Volcengine LLM API key (for content summarization)
+ARK_API_KEY=your_ark_api_key_here
+```
+
+## Usage
+
+Basic usage:
+
+```bash
+# Interactive mode (recommended)
+./run.sh
+# Or
+python main.py
+
+# Directly specify URL
+./run.sh "https://www.xiaoyuzhoufm.com/episode/your-podcast-url"
+# Or
+python main.py "https://www.xiaoyuzhoufm.com/episode/your-podcast-url"
+```
+
+Specify output file:
+
+```bash
+./run.sh -o output.txt "https://www.xiaoyuzhoufm.com/episode/your-podcast-url"
+# Or
+python main.py -o output.txt "https://www.xiaoyuzhoufm.com/episode/your-podcast-url"
+```
+
+Select different transcription methods:
+
+```bash
+# Use Volcengine for transcription (default, recommended for long audio)
+./run.sh --method volcengine "https://www.xiaoyuzhoufm.com/episode/your-podcast-url"
+
+# Use Google speech recognition (suitable for short audio)
+./run.sh --method sr "https://www.xiaoyuzhoufm.com/episode/your-podcast-url"
+
+# Transcribe without content summarization
+./run.sh --no-summary "https://www.xiaoyuzhoufm.com/episode/your-podcast-url"
+```
+
+## Notes
+
+- For long audio (podcasts are typically long), Volcengine speech recognition is recommended for better results
+- Volcengine speech recognition service features:
+  - Supports long audio transcription
+  - Provides detailed sentence information and timestamps
+  - Can distinguish between different speakers
+  - Requires Volcengine API credentials (paid service)
+- Content summarization uses Volcengine LLM API, requiring the corresponding API key
+- Google speech recognition API has duration limitations, typically only suitable for short audio
+- The script has a built-in fallback mechanism, automatically trying other methods when the preferred transcription method fails
+
+## License
+
+MIT
+
+---
+
 # Podcast2Summary - 播客转录与总结工具
 
 这个工具可以根据小宇宙播客的URL，自动提取音频内容，将其转换为文字，并生成内容总结。
